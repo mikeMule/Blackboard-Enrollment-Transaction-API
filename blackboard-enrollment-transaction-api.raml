@@ -6,10 +6,9 @@ mediaType:
   - application/json
   - application/xml
 
-
-
 uses:
   commonResources: exchange_modules/93028319-0fab-4b26-ad17-dc393e48f80c/humber-common-library-100-fat-raml-fragment-v1/1.0.0/humber-common-libraries.raml
+
 
 
 /healthcheck:
@@ -129,6 +128,28 @@ types:
       lmsCourseId?:
         type: string
         description: LMS Course ID (returned only on success)
+  Student:
+    type: object
+    properties:
+      personType:
+        type: string
+        description: Type of person (e.g., Student, Staff)
+      eventType:
+        type: string
+        description: Type of event (e.g., Create, Update)
+      personNumber:
+        type: string
+        description: Unique identifier for the student
+      lastName:
+        type: string
+        description: Last name of the student
+      firstName1:
+        type: string
+        description: First name of the student
+      postalZip:
+        type: string
+        description: Postal or ZIP code of the student
+
 /transactions:
   post:
     description: >
@@ -185,23 +206,13 @@ types:
 
 
 /courses:
-  post:
-    description:
-      Receives course creation requests and sends the data to Blackboard to create a new course.
+  put:
+    description: >
+      Receives course creation requests and sends the data to Blackboard to create or update a course.
     body:
-      application/json:
-        type: CourseCreationRequest
-        example:
-            {
-                "courseObjectId": 1001,
-                "sectionObjectId": 2001,
-                "lmsCourseId": "COMP101-2025-SPRING",
-                "courseTitle": "Introduction to Computer Science",
-                "courseDescription": "This course covers the fundamentals of computing, algorithms, and software development.",
-                "courseDuration": 45,
-                "courseType": "Online",
-                "courseStatus": "Active"
-            }
+      application/xml:
+        # type: CourseCreationRequest
+        example: !include example/course-creation-example.xml  # You can reference your XML file here.
     responses:
       200:
         description: Course created successfully
@@ -214,7 +225,7 @@ types:
               courseObjectId: 1001
               lmsCourseId: "COMP101-2025-SPRING"
       400:
-        description: Course created successfully
+        description: Bad request or validation error
         body:
           application/json:
             type: CourseCreationResponse
@@ -223,4 +234,39 @@ types:
               message: "Course creation failed. LMS Course ID already exists."
       500:
         description: Internal server error
+
+
+
+/student:
+  get:
+    description: >
+      Retrieves student details from the system.
+      You can provide a `personNumber` query parameter to fetch a specific student.
+    queryParameters:
+      personNumber:
+        type: string
+        required: false
+        description: Optional filter to get a specific student by ID
+    responses:
+      200:
+        description: Student(s) retrieved successfully
+        body:
+          application/json:
+            type: Student
+            example:
+              {
+                "personType": "Student",
+                "eventType": "Create",
+                "personNumber": "S123456",
+                "lastName": "Doe",
+                "firstName1": "John",
+                "postalZip": "M9W1G6"
+              }
+
+      404:
+        description: Student not found
+      500:
+        description: Internal server error
+
+
 

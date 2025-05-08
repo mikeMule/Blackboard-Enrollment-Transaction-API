@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<integrationMessage>
+  <action>NEW</action>
+  <eventType>CurriculumCourseSectionUpdate</eventType>
+  <sourceSystemId>DestinyOneCE</sourceSystemId>
+  <body>
+    <courseSection>
+      <action>
+        <message>Add to Cart</message>
+        <label>add_to_cart</label>
+      </action>
+      <activeWaitListSize>14</activeWaitListSize>
+      <applicability>Public</applicability>
+      <associatedCourse>
+        <programOffice>
+          <code>PO0001</code>
+          <internalUseOnly>false</internalUseOnly>
+          <name>Real Estate Education Program</name>
+          <objectId>17503</objectId>
+          <objectStatusCode>active</objectStatusCode>
+        </programOffice>
+        <courseNumber>0045</courseNumber>
+        <disciplineCode>REEP</disciplineCode>
+        <objectId>21575</objectId>
+      </associatedCourse>
+      <sectionSchedules>
+        <sectionSchedule>
+          <breakHours>0.0</breakHours>
+          <building>
+            <code>B</code>
+            <name>Building "B"</name>
+            <objectId>18491</objectId>
+            <objectStatusCode>active</objectStatusCode>
+          </building>
+          <campus>
+            <code>CA0001</code>
+            <name>Humber North</name>
+            <objectId>18489</objectId>
+            <objectStatusCode>active</objectStatusCode>
+          </campus>
+          <dateTimeTBA>false</dateTimeTBA>
+          <daysOfWeekString>2</daysOfWeekString>
+          <endDate>26 Nov 2018</endDate>
+          <endTimeString>pm100</endTimeString>
+          <endType>date</endType>
+          <frequency>1</frequency>
+          <distanceLearning>false</distanceLearning>
+          <isPVVisible>true</isPVVisible>
+          <numberOfSessions>10</numberOfSessions>
+          <objectId>22825</objectId>
+          <objectStatusCode>active</objectStatusCode>
+          <room>
+            <code>RM0001</code>
+            <name>Canadiana</name>
+            <objectId>18494</objectId>
+            <objectStatusCode>active</objectStatusCode>
+          </room>
+          <scheduleType>Discussion</scheduleType>
+          <startDate>10 Sep 2018</startDate>
+          <startTimeString>pm1200</startTimeString>
+          <updateTime>14 Sep 2018 03:11:29 PM</updateTime>
+          <updater>
+            <objectId>36611</objectId>
+            <version>2</version>
+            <loginId>aapte</loginId>
+            <personType>Staff</personType>
+            <printName>Aditi Apte</printName>
+          </updater>
+          <version>1</version>
+        </sectionSchedule>
+      </sectionSchedules>
+      <updater>
+        <objectId>36611</objectId>
+        <version>2</version>
+        <loginId>aapte</loginId>
+        <personType>Staff</personType>
+        <printName>Aditi Apte</printName>
+      </updater>
+      <version>8</version>
+    </courseSection>
+  </body>
+</integrationMessage>
