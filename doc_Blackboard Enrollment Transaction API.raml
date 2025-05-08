@@ -1,0 +1,60 @@
+#%RAML 1.0 DocumentationItem
+title: Real-Time Enrollment Flow Between DestinyOne and Blackboard
+content: API-DOC
+ 
+
+documentation:
+  - title: Overview
+    content: |
+      This API receives real-time enrollment notifications from DestinyOne and processes them to manage course memberships in Blackboard. Supported actions include enrollment, drop, and transfer.
+
+  - title: Real-Time Processing Flow
+    content: |
+      ✅ Step-by-Step Breakdown
+      
+      **01. DestinyOne ➝ iPaaS**  
+      DestinyOne sends an HTTP POST request to the iPaaS (Integration Platform).  
+      This request is a Notification of Transaction, which includes information like the student ID, course section, and the action (enroll, drop, or transfer).
+
+      **02. Validation Logic in iPaaS**  
+      iPaaS checks:  
+      - If the LMS Person ID (Blackboard-specific ID for the student) is a certain value (e.g., X)  
+      - AND if the LMS flag is false  
+      ✅ If both of these are true, the request is ignored (likely because the student isn’t set up for Blackboard).
+
+      **03. Determine the Action**  
+      iPaaS examines the incoming request to determine if the action is:  
+      - Enroll  
+      - Drop  
+      - Transfer
+
+      **04. Handle Drop or Transfer → Disable Enrollment**  
+      If the action is drop or transfer:  
+      - iPaaS calls Blackboard’s "Update Student Memberships" API.  
+      - This disables the student’s enrollment in the course (but does not delete it).
+
+      **05. Handle Enroll or Transfer → Create Enrollment**  
+      If the action is enroll or transfer:  
+      - iPaaS calls Blackboard’s "Create Student Memberships" API.  
+      - This adds or re-enables the student's enrollment in the new course section.
+
+      **06. Handle Duplicate Membership Error**  
+      If Blackboard returns an error like:  
+      “Student membership already exists” (e.g., student dropped and is now re-enrolling),  
+      - iPaaS ignores this specific error.  
+      - A nightly batch job will handle reconciliation later.
+
+      **07. Blackboard Response**  
+      Blackboard responds with either success or error for each API call.  
+      - iPaaS records and interprets this response.
+
+      **08. Retry on Timeout**  
+      If any Blackboard API call times out:  
+      - iPaaS retries the API call automatically.
+
+      **09. Respond Back to DestinyOne**  
+      iPaaS sends a response back to DestinyOne:  
+      - Includes the original request  
+      - Responds with HTTP status code:  
+        - `200 OK` if successful or duplicate membership (acceptable error)  
+        - `400 Bad Request` if the request failed validation or processing

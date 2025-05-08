@@ -1,0 +1,226 @@
+#%RAML 1.0
+title: Blackboard Enrollment Transaction API
+version: v1
+baseUri: https://api.example.com/blackboard
+mediaType: 
+  - application/json
+  - application/xml
+
+
+
+uses:
+  commonResources: exchange_modules/93028319-0fab-4b26-ad17-dc393e48f80c/humber-common-library-100-fat-raml-fragment-v1/1.0.0/humber-common-libraries.raml
+
+
+/healthcheck:
+  get:
+    displayName: HealthCheck
+    description: Gets the Current health Status of this API
+    # is: [commonResources.pingResponse]
+
+types:
+  EnrollmentTransaction:
+    type: object
+    properties:
+      action:
+        type: string
+        enum: [enroll, drop, transfer]
+        description: Type of enrollment action
+      dataSourceId: 
+         type: string
+         description: LMS data source ID (required for enroll and transfer)
+      courseExternalId: 
+        type: string
+        description: Blackboard course external ID (required for enroll and transfer)
+      userId: 
+        type: string
+        description: Blackboard user ID (required for enroll and transfer)
+      courseRoleId: 
+        type: string
+        description: Course role in Blackboard (e.g., Student, Instructor)
+      fromCourseExternalId?: 
+        type: string
+        description: Previous course external ID in case of transfer
+      timestamp: 
+        type: datetime
+        description: Timestamp of the transaction
+  TransactionResponse:
+    type: object
+    properties:
+      status: 
+        type: string
+        description: Status message (success or failure)
+      message: 
+        type: string
+        description: Detailed message or error description
+      originalRequest: EnrollmentTransaction
+    examples:
+      successExample:
+        value:
+          status: "success"
+          message: "Student enrollment successfully processed."
+          originalRequest:
+            action: "enroll"
+            dataSourceId: "external"
+            courseExternalId: "COMP101-2025-SPRING"
+            userId: "student123"
+            courseRoleId: "Student"
+            timestamp: "2025-05-08T14:30:00Z"
+      failureExample:
+        value:
+          status: "failure"
+          message: "LMS flag is false. Student not eligible for Blackboard enrollment."
+          originalRequest:
+            action: "enroll"
+            dataSourceId: "external"
+            courseExternalId: "COMP101-2025-SPRING"
+            userId: "student123"
+            courseRoleId: "Student"
+            timestamp: "2025-05-08T14:30:00Z"
+  CourseCreationRequest:
+    type: object
+    properties:
+      courseObjectId:
+        type: integer
+        description: Unique identifier for the course object
+        required: true
+      sectionObjectId:
+        type: integer
+        description: Unique identifier for the section object
+        required: true
+      lmsCourseId:
+        type: string
+        description: The LMS-specific course identifier
+        required: true
+      courseTitle:
+        type: string
+        description: Title of the course
+        required: true
+      courseDescription:
+        type: string
+        description: Description of the course
+        required: false
+      courseDuration:
+        type: number
+        description: Duration of the course in hours
+        required: false
+      courseType:
+        type: string
+        description: Type of course (e.g., Online, In-Person)
+        required: false
+      courseStatus:
+        type: string
+        description: Status of the course (e.g., Active, Inactive)
+        required: true
+  CourseCreationResponse:
+    type: object
+    properties:
+      status:
+        type: string
+        description: Response status ("success" or "failure")
+        required: true
+      message:
+        type: string
+        description: Human-readable message describing the result
+        required: true
+      courseObjectId?:
+        type: integer
+        description: ID of the course (returned only on success)
+      lmsCourseId?:
+        type: string
+        description: LMS Course ID (returned only on success)
+/transactions:
+  post:
+    description: >
+      Receives real-time course enrollment notifications from DestinyOne and processes them for Blackboard.
+    body:
+      application/json:
+        type: EnrollmentTransaction
+    responses:
+      200:
+        description: Request processed successfully
+        body:
+          application/json:
+            type: TransactionResponse
+            example:
+              status: "success"
+              message: "Student enrollment successfully processed."
+              originalRequest:
+                action: "enroll"
+                dataSourceId: "external"
+                courseExternalId: "COMP101-2025-SPRING"
+                userId: "student123"
+                courseRoleId: "Student"
+                timestamp: "2025-05-08T14:30:00Z"
+      400:
+        description: Invalid request or business rule violation
+        body:
+          application/json:
+            type: TransactionResponse
+            example:
+              status: "failure"
+              message: "Missing required field: userId"
+              originalRequest:
+                action: "enroll"
+                dataSourceId: "external"
+                courseExternalId: "COMP101-2025-SPRING"
+                userId: "student123"
+                courseRoleId: "Student"
+                timestamp: "2025-05-08T14:30:00Z"
+      500:
+        description: Internal server error
+        body:
+          application/json:
+            type: TransactionResponse
+            example:
+              status: "failure"
+              message: "Unexpected error occurred while processing enrollment."
+              originalRequest:
+                action: "enroll"
+                dataSourceId: "external"
+                courseExternalId: "COMP101-2025-SPRING"
+                userId: "student123"
+                courseRoleId: "Student"
+                timestamp: "2025-05-08T14:30:00Z"
+
+
+/courses:
+  post:
+    description:
+      Receives course creation requests and sends the data to Blackboard to create a new course.
+    body:
+      application/json:
+        type: CourseCreationRequest
+        example:
+            {
+                "courseObjectId": 1001,
+                "sectionObjectId": 2001,
+                "lmsCourseId": "COMP101-2025-SPRING",
+                "courseTitle": "Introduction to Computer Science",
+                "courseDescription": "This course covers the fundamentals of computing, algorithms, and software development.",
+                "courseDuration": 45,
+                "courseType": "Online",
+                "courseStatus": "Active"
+            }
+    responses:
+      200:
+        description: Course created successfully
+        body:
+          application/json:
+            type: CourseCreationResponse
+            example:
+              status: "success"
+              message: "Course successfully created in Blackboard."
+              courseObjectId: 1001
+              lmsCourseId: "COMP101-2025-SPRING"
+      400:
+        description: Course created successfully
+        body:
+          application/json:
+            type: CourseCreationResponse
+            example:
+              status: "failure"
+              message: "Course creation failed. LMS Course ID already exists."
+      500:
+        description: Internal server error
+

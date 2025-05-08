@@ -1,0 +1,13 @@
+#%RAML 1.0 Trait
+usage: Apply this trait to the /ping endpoint
+
+responses:
+  200:
+    headers:
+      Content-Type:
+        description: Indicates that the request has succeeded.
+    body:
+      application/json:
+        type: !include ../datatypes/healthCheckResponse.raml
+        example: !include ../examples/healthCheckResponseExample.json
+         

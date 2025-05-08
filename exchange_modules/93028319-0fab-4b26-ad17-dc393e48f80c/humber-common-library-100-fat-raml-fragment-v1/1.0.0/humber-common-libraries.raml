@@ -1,0 +1,69 @@
+#%RAML 1.0 Library
+usage: Use the following traits for the APIs
+
+traits:
+  pingResponse: !include traits/pingResponse.raml
+  errorResponse: !include traits/errorResponse.raml
+  content-type-required:
+    headers:
+      Content-Type:
+        type: string
+        example: application/json
+  content-length-required:
+    headers:
+      Content-Length:
+        type: integer
+        example: 20
+  last-modified-required:
+    headers:
+      Last-Modified:
+        type: datetime
+        example: Tue, 08 Apr 2025 16:12:12 GMT
+        format: rfc2616
+  content-language-required:
+    headers:
+      Content-Language:
+        type: string
+        example: en-US
+  content-encoding-required:
+    headers:
+      Content-Encoding:
+        type: string
+        example: gzip
+  accept-required:
+    headers:
+      accept:
+        description: Specify the media type of the response to be returned
+        type: string
+        example: application/json
+  x-correlation-id-required:
+    headers:
+      x-correlation-id:
+        required: false
+        description: A unique transaction identifier sent by the caller/calling application that can be used for tracing purposes
+        type: string
+        example: jhfsdfhw43w-6da5-11e8-adc0-sdfsd23423
+  x-caller-name-required:
+    headers:
+      x-caller-name:
+        required: false
+        example: CallerName
+        description: The name of the calling API/Application
+        type: string
+  standard-error-response: !include traits/errorResponse.raml
+  client-credentials-required:
+    headers:
+      client_id:
+        type: string
+        example: 6b747474fbb84b83493849a4126a9576ff
+        description: client_id issued by the API Admin/Owner for accessing the API
+      client_secret:
+        type: string
+        example: h2432f4aa3nsjfsdfj43w4FA67A2FEF575
+        description: client_secret issued by the API Admin/Owner for accessing the API
+  jwt-required:
+    headers:
+      authorization:
+        type: string
+        description: JWT Token
+        example: Bearer lFIOxLk23fdfsdOIxQshZg9j0l9PmcKMsOA

@@ -1,0 +1,17 @@
+{
+  "dependencies": [
+    {
+      "version": "1.0.0",
+      "assetId": "humber-common-library-100-fat-raml-fragment-v1",
+      "groupId": "93028319-0fab-4b26-ad17-dc393e48f80c",
+      "provided": false
+    }
+  ],
+  "version": "1.0.0",
+  "descriptorVersion": "1.0.0",
+  "classifier": "raml",
+  "main": "blackboard-enrollment-transaction-api.raml",
+  "assetId": "blackboard-enrollment-transaction-api",
+  "groupId": "93028319-0fab-4b26-ad17-dc393e48f80c",
+  "name": "Blackboard Enrollment Transaction API"
+}

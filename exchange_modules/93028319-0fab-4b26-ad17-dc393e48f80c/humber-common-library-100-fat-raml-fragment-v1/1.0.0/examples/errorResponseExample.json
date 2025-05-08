@@ -1,0 +1,14 @@
+{
+    "success": false,
+    "apiName": "humber-api-template",
+    "version": "1.0.0",
+    "correlationId": "1234566-e4a7-11eb-b99c-2345fsfd3sd34",
+    "timestamp": "2025-04-08T12:20:20.456Z",
+    "errorDetails": [
+        {
+            "code": 404,
+            "reason": "APIKIT:NOT_FOUND",
+            "message": "The API has not been implemented /orgs"
+        }
+    ]
+}

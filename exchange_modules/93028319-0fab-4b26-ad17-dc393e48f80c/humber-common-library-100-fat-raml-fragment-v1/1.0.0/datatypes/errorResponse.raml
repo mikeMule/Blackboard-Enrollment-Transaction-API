@@ -1,0 +1,8 @@
+#%RAML 1.0 DataType
+displayName: errorResponse
+type: !include errorMetaData.raml
+properties:
+  errorDetails:
+    type: array
+    items: !include errorDetails.raml
+example: !include ../examples/errorResponseExample.json

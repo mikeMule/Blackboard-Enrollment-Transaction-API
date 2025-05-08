@@ -1,0 +1,144 @@
+#%RAML 1.0 Trait
+usage: Standard error response structure
+
+responses:  
+  400:
+    description:
+      The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+    headers:
+      Content-Type:
+        description: The request could not be understood by the server due to incorrect syntax. The client SHOULD NOT repeat the request without modifications.       
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json
+  401:
+    description:
+      The supplied credentials are invalid.
+    headers:
+      Content-Type:
+        description: Indicates that the request requires user authentication information. The client MAY repeat the request with a suitable Authorization header field
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json
+  403:
+    description:
+      Forbidden Request
+    headers:
+      Content-Type:
+        description: The API is forbidden from requests
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json        
+  404:
+    description:
+      The server cannot find the requested resource.
+    headers:
+      Content-Type:
+        description: The server can not find the requested resource.
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json
+  405:
+    description:
+      Method Not Allowed
+    headers:
+      Content-Type:
+        description: The API resource is not allowed
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json        
+  406:
+    description:
+      The target resource does not have a current representation that would be acceptable to the user agent.
+    headers:
+      Content-Type:
+        description: The server doesn’t find any content that conforms to the criteria given by the user agent in the Accept header sent in the request.
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json
+  408:
+    description:
+      The request to the server has been timedout.
+    headers:
+      Content-Type:
+        description: Indicates that the server did not receive a complete request from the client within the server’s allotted timeout period.
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json
+  415:
+    description:
+      The accept header specified an unsupported media type.
+    headers:
+      Content-Type:
+        description: The media-type in Content-type of the request is not supported by the server.
+    body:
+      application/json: 
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json
+  429:
+    description:
+      Too many requests sent to the server.
+    headers:
+      Content-Type:
+        description: The user has sent too many requests in a given amount of time (“rate limiting”).
+    body:
+      application/json: 
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json            
+  500:
+    description:
+      An internal processing error occurred while processing the API request.
+    headers:
+      Content-Type:
+        description: The server encountered an unexpected condition that prevented it from fulfilling the request.
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json
+  501:
+    description:
+      The method has not been implemented.
+    headers:
+      Content-Type:
+        description: The HTTP method is not supported by the server and cannot be handled.
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json
+  502:
+    description:
+      Bad Gateway
+    headers:
+      Content-Type:
+        description: The request reaches a bad gateway
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json        
+  503:
+    description:
+      Issues accessing the system.
+    headers:
+      Content-Type:
+        description: The server is not ready to handle the request.
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json
+  504:
+    description:
+      Gateway Timeout
+    headers:
+      Content-Type:
+        description: The gateway request has timed out.
+    body:
+      application/json:
+        type: !include ../datatypes/errorResponse.raml
+        example: !include ../examples/errorResponseExample.json        
